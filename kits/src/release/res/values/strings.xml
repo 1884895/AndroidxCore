@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_variant">Release版本</string>
+    <string name="build_type">正式版</string>
+</resources>

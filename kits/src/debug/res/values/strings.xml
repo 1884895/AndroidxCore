@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_variant">Debug版本</string>
+    <string name="build_type">调试</string>
+    <string name="switch_hj">切换环境</string>
+</resources>

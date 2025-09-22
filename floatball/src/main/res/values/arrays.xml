@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 菜单项图标数组 - 对应底部tab -->
+    <array name="menu_icons">
+        <item>@mipmap/main_tab_z_y</item>        <!-- 作业 -->
+    </array>
+
+    <!-- 菜单项文字数组 - 对应底部tab -->
+    <string-array name="menu_texts">
+        <item>菜单</item>
+    </string-array>
+</resources>

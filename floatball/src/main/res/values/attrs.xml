@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CircleFanMenuViewGroup">
+        <attr name="centerScr" format="reference" />
+        <attr name="backgroundRadius" format="dimension" />
+        <attr name="innerPadding" format="dimension" />
+        <attr name="menuItemCount" format="integer" />
+        <attr name="animationDelay" format="integer" />
+        <attr name="menuItemLayoutId" format="reference" />
+        <attr name="menuIcons" format="reference" />
+        <attr name="menuTexts" format="reference" />
+    </declare-styleable>
+</resources>
