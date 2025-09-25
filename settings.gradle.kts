@@ -38,3 +38,4 @@ include(":AndroidxCore")
 include(":kits")
 include(":floatball")
 include(":kiosk")
+project(":kiosk").buildFileName = "build.gradle.kts"

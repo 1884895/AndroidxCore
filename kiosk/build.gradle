@@ -1,0 +1,65 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.jakewharton.butterknife'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.alibaba.arouter'
+apply plugin: 'kotlin-kapt'
+//apply plugin: 'io.objectbox'
+
+def cfg = rootProject.ext.configuration // 配置
+def libs = rootProject.ext.libraries // 库
+android {
+    compileSdkVersion cfg.compileVersion
+    buildToolsVersion cfg.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion cfg.minSdk
+        targetSdkVersion cfg.targetSdk
+        versionCode 1
+        versionName "1.0"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName(), AROUTER_GENERATE_DOC: "enable"]
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "GLOBAL_LOG", "false"
+        }
+        releaseTest {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "GLOBAL_LOG", "true"
+        }
+        debug {
+            buildConfigField "String", "WEB_URL", WEB_URL_DEBUG
+            buildConfigField "boolean", "GLOBAL_LOG", "true"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    api 'androidx.appcompat:appcompat:1.0.0'
+    api 'com.google.android.material:material:1.0.0'
+    // This is only needed if you want to use encrypted databases
+    // 基础依赖包，必须要依赖
+    api 'com.geyifeng.immersionbar:immersionbar:3.2.2'
+// kotlin扩展（可选）
+    api 'com.geyifeng.immersionbar:immersionbar-ktx:3.2.2'
+// fragment快速实现（可选）已废弃
+    kapt 'com.alibaba:arouter-compiler:1.2.1'
+
+    api('com.alibaba:arouter-api:1.4.0') {
+//        exclude group: 'androidx'
+    }
+    api 'com.geyifeng.immersionbar:immersionbar-components:3.2.2'
+}

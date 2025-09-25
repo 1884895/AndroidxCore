@@ -15,7 +15,7 @@ fun getBuildTime(): String {
 }
 
 android {
-    namespace = "com.yunxiao.kits"
+    namespace = "com.haofenshu.lnkscreen"
     compileSdk = 34
 
     defaultConfig {
@@ -49,19 +49,6 @@ android {
         viewBinding = true
     }
 
-    sourceSets {
-        getByName("debug") {
-            res.srcDirs("src/debug/res")
-            assets.srcDirs("src/debug/assets")
-            java.srcDirs("src/debug/java")
-        }
-        getByName("release") {
-            res.srcDirs("src/release/res")
-            assets.srcDirs("src/release/assets")
-            java.srcDirs("src/release/java")
-        }
-    }
-
     libraryVariants.all {
         outputs.forEach { output ->
             val buildType = this.buildType.name
@@ -79,5 +66,4 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation("com.alibaba:arouter-api:1.4.0")
 }
