@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.haofenshu.lnkscreen">
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <queries>
+        <!-- 声明需要访问的具体应用包名 -->
+        <package android:name="com.hihonor.android.launcher" />
+        <package android:name="com.hihonor.edulauncher" />
+        <package android:name="com.teslacoilsw.launcher" />
+    </queries>
+
+    <uses-permission
+        android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+    <application>
+
+        <!-- 系统设置管理页面 -->
+        <activity
+            android:name=".SystemSettingsActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:label="系统设置管理"
+            android:screenOrientation="portrait" />
+
+        <!-- 开机自启 -->
+        <receiver
+            android:name=".BootReceiver"
+            android:exported="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 网络状态监听 -->
+        <receiver
+            android:name=".NetworkStateReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <!--         Device Admin Receiver -->
+        <receiver
+            android:name=".MyDeviceAdminReceiver"
+            android:exported="true"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin" />
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 双重入口服务 -->
+        <service
+            android:name=".FloatingEntryService"
+            android:exported="false"
+            tools:targetApi="o" />
+    </application>
+
+</manifest>

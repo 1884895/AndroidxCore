@@ -4,6 +4,7 @@ import java.util.Calendar
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    kotlin("kapt")
 }
 
 // 1. 定义版本号
@@ -12,6 +13,7 @@ fun getBuildTime(): String {
     val sdf = SimpleDateFormat("yyyyMMddHHmmss")
     return sdf.format(date)
 }
+
 android {
     namespace = "com.yunxiao.kits"
     compileSdk = 34
@@ -70,32 +72,12 @@ android {
         }
     }
 }
-
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-    debugApi("com.facebook.stetho:stetho-okhttp3:1.6.0")
-    debugApi("com.facebook.stetho:stetho:1.6.0")
-    debugApi("com.facebook.stetho:stetho-js-rhino:1.6.0")
-
-    debugApi("com.github.chuckerteam.chucker:library:4.1.0")
-    releaseApi("com.github.chuckerteam.chucker:library-no-op:4.1.0")
-    releaseImplementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.16")
-    val lastversion = "3.7.1"
-    //核心模块
-
-    debugApi("io.github.didi.dokit:dokitx:${lastversion}") {
-        exclude(group = "com.android.volley", module = "volley")
-        exclude(group = "com.github.ybq", module = "Android-SpinKit")
-
-    }
-    debugApi("com.android.volley:volley:1.2.1")
-    debugApi("com.github.ybq:Android-SpinKit:1.4.0")
-
+    implementation("com.alibaba:arouter-api:1.4.0")
 }

@@ -37,3 +37,4 @@ rootProject.name = "AndroidxCore"
 include(":AndroidxCore")
 include(":kits")
 include(":floatball")
+include(":kiosk")

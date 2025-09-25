@@ -29,12 +29,12 @@ android {
         }
     }
     namespace = "com.haofenshu.AndroidxCore"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.haofenshu.AndroidxCore"
         minSdk = 28
-        targetSdk = 35
+        targetSdk = 34
         versionCode = getVersionCodeByName(appVersionName)
         versionName = appVersionName
         multiDexEnabled = true
@@ -91,6 +91,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(project(":floatball"))
     implementation(project(":kits"))
+    implementation(project(":kiosk"))
     kapt(libs.hilt.android.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

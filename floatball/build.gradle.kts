@@ -13,7 +13,7 @@ fun getBuildTime(): String {
 }
 android {
     namespace = "com.xcore.floatball"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24
