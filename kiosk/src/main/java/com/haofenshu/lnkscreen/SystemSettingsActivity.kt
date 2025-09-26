@@ -15,6 +15,7 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -295,6 +296,17 @@ class SystemSettingsActivity : AppCompatActivity() {
     }
 
     private fun openBrightnessSettings() {
+        // 自动清除亮度限制，兼容旧版本
+        try {
+            if (KioskUtils.isBrightnessRestricted(this)) {
+                // 静默清除限制，不显示提示
+                KioskUtils.clearBrightnessRestriction(this)
+            }
+        } catch (e: Exception) {
+            // 忽略错误，继续打开设置
+        }
+
+        // 打开亮度设置页面
         KioskUtils.openSystemSettings(this, Settings.ACTION_DISPLAY_SETTINGS)
     }
 

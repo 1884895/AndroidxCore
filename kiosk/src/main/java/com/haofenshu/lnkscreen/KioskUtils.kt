@@ -244,6 +244,8 @@ object KioskUtils {
             devicePolicyManager.clearUserRestriction(adminComponent, UserManager.DISALLOW_ADD_USER)
             devicePolicyManager.clearUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_CREDENTIALS)
             devicePolicyManager.clearUserRestriction(adminComponent, UserManager.DISALLOW_NETWORK_RESET)
+            // 清除亮度调节限制，恢复亮度调节功能
+            devicePolicyManager.clearUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_BRIGHTNESS)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 devicePolicyManager.clearUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_MOBILE_NETWORKS)
             }
@@ -1557,6 +1559,60 @@ object KioskUtils {
 
         } catch (e: Exception) {
             Log.e(TAG, "检查Honor系统重置菜单项屏蔽状态失败", e)
+            false
+        }
+    }
+
+    /**
+     * 清除亮度调节限制，恢复手动和自动亮度调节功能
+     * 适用于已经设置过 DISALLOW_CONFIG_BRIGHTNESS 的设备
+     */
+    fun clearBrightnessRestriction(context: Context): Boolean {
+        return try {
+            if (!isDeviceOwner(context)) {
+                Log.w(TAG, "需要设备所有者权限才能清除亮度限制")
+                return false
+            }
+
+            val devicePolicyManager = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+            val adminComponent = getDeviceAdminComponent(context)
+
+            // 清除亮度调节限制
+            devicePolicyManager.clearUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_BRIGHTNESS)
+
+            // 验证限制是否已清除
+            val restrictions = devicePolicyManager.getUserRestrictions(adminComponent)
+            val isBrightnessRestricted = restrictions.getBoolean(UserManager.DISALLOW_CONFIG_BRIGHTNESS, false)
+
+            if (!isBrightnessRestricted) {
+                Log.d(TAG, "亮度调节限制已成功清除")
+                true
+            } else {
+                Log.w(TAG, "清除亮度调节限制失败")
+                false
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "清除亮度调节限制时出错", e)
+            false
+        }
+    }
+
+    /**
+     * 检查是否存在亮度调节限制
+     */
+    fun isBrightnessRestricted(context: Context): Boolean {
+        return try {
+            if (!isDeviceOwner(context)) {
+                return false
+            }
+
+            val devicePolicyManager = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+            val adminComponent = getDeviceAdminComponent(context)
+            val restrictions = devicePolicyManager.getUserRestrictions(adminComponent)
+
+            restrictions.getBoolean(UserManager.DISALLOW_CONFIG_BRIGHTNESS, false)
+        } catch (e: Exception) {
+            Log.e(TAG, "检查亮度限制状态失败", e)
             false
         }
     }
