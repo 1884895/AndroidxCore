@@ -13,12 +13,14 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import android.view.WindowManager
-import android.widget.*
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.ScrollView
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.haofenshu.lnkscreen.KioskUtils
 
 class SystemSettingsActivity : AppCompatActivity() {
 
@@ -170,7 +172,8 @@ class SystemSettingsActivity : AppCompatActivity() {
 
         // 检查是否为debug模式
         val applicationInfo = applicationInfo
-        val isDebug = (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0
+        val isDebug =
+            (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0
 
         // 只在debug模式下显示网络设置按钮
         if (isDebug) {
@@ -250,7 +253,8 @@ class SystemSettingsActivity : AppCompatActivity() {
 
         // 检查是否为debug模式
         val applicationInfo = applicationInfo
-        val isDebug = (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0
+        val isDebug =
+            (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0
 
         /* Release模式下只显示基础功能：
          * - 网络检测
@@ -284,28 +288,19 @@ class SystemSettingsActivity : AppCompatActivity() {
         }
 
         val networkCheckButton = Button(this).apply {
-            text = "网络检测"
+            text = "网络检测和设置"
             setOnClickListener {
                 val networkInfo = KioskUtils.getNetworkStatusInfo(this@SystemSettingsActivity)
                 showStatus("网络状态检查完成")
 
-                // 如果没有网络，提供手动检查选项
-                if (!KioskUtils.isNetworkAvailable(this@SystemSettingsActivity)) {
-                    android.app.AlertDialog.Builder(this@SystemSettingsActivity)
-                        .setTitle("网络检测")
-                        .setMessage("当前无网络连接\n\n$networkInfo")
-                        .setPositiveButton("打开WiFi设置") { _, _ ->
-                            openWifiSettings()
-                        }
-                        .setNegativeButton("取消", null)
-                        .show()
-                } else {
-                    android.app.AlertDialog.Builder(this@SystemSettingsActivity)
-                        .setTitle("网络状态")
-                        .setMessage(networkInfo)
-                        .setPositiveButton("确定", null)
-                        .show()
-                }
+                android.app.AlertDialog.Builder(this@SystemSettingsActivity)
+                    .setTitle("网络检测和设置")
+                    .setMessage("当前无网络连接\n\n$networkInfo")
+                    .setPositiveButton("打开WiFi设置") { _, _ ->
+                        openWifiSettings()
+                    }
+                    .setNegativeButton("取消", null)
+                    .show()
             }
         }
         section.addView(networkCheckButton)
@@ -419,12 +414,14 @@ class SystemSettingsActivity : AppCompatActivity() {
                         .setTitle("Honor侧滑悬浮入口状态")
                         .setMessage("当前状态: $statusText\n\n需要重新应用Kiosk模式设置才能屏蔽Honor侧滑悬浮入口")
                         .setPositiveButton("重新应用设置") { _, _ ->
-                            val success = KioskUtils.setupEnhancedKioskMode(this@SystemSettingsActivity)
+                            val success =
+                                KioskUtils.setupEnhancedKioskMode(this@SystemSettingsActivity)
                             if (success) {
                                 showStatus("Honor侧滑悬浮入口屏蔽设置已应用")
 
                                 // 再次检查状态
-                                val newStatus = KioskUtils.isHonorDockBarBlocked(this@SystemSettingsActivity)
+                                val newStatus =
+                                    KioskUtils.isHonorDockBarBlocked(this@SystemSettingsActivity)
                                 val newStatusText = if (newStatus) "已屏蔽" else "仍未屏蔽"
                                 showStatus("屏蔽状态: $newStatusText")
                             } else {
@@ -442,19 +439,22 @@ class SystemSettingsActivity : AppCompatActivity() {
                 text = "Honor重置菜单项屏蔽(Debug)"
                 setTextColor(0xFF9C27B0.toInt()) // 紫色文字
                 setOnClickListener {
-                    val isBlocked = KioskUtils.isHonorResetSettingsBlocked(this@SystemSettingsActivity)
+                    val isBlocked =
+                        KioskUtils.isHonorResetSettingsBlocked(this@SystemSettingsActivity)
                     val statusText = if (isBlocked) "已屏蔽" else "未屏蔽"
 
                     android.app.AlertDialog.Builder(this@SystemSettingsActivity)
                         .setTitle("Honor重置菜单项屏蔽状态")
                         .setMessage("当前状态: $statusText\n\n目标: 系统设置应用内的重置菜单项\n(SubSettings页面)\n\n需要重新应用Kiosk模式设置才能屏蔽重置菜单项")
                         .setPositiveButton("重新应用设置") { _, _ ->
-                            val success = KioskUtils.setupEnhancedKioskMode(this@SystemSettingsActivity)
+                            val success =
+                                KioskUtils.setupEnhancedKioskMode(this@SystemSettingsActivity)
                             if (success) {
                                 showStatus("Honor重置菜单项屏蔽设置已应用")
 
                                 // 再次检查状态
-                                val newStatus = KioskUtils.isHonorResetSettingsBlocked(this@SystemSettingsActivity)
+                                val newStatus =
+                                    KioskUtils.isHonorResetSettingsBlocked(this@SystemSettingsActivity)
                                 val newStatusText = if (newStatus) "已屏蔽" else "仍未屏蔽"
                                 showStatus("重置菜单项屏蔽状态: $newStatusText")
                             } else {
@@ -490,7 +490,8 @@ class SystemSettingsActivity : AppCompatActivity() {
                         .setTitle("退出单应用模式")
                         .setMessage("确定要退出单应用模式吗？这将清除所有Kiosk设置。")
                         .setPositiveButton("确定") { _, _ ->
-                            val success = KioskUtils.exitKioskModeInDebug(this@SystemSettingsActivity)
+                            val success =
+                                KioskUtils.exitKioskModeInDebug(this@SystemSettingsActivity)
                             if (success) {
                                 showStatus("已退出单应用模式")
                                 // 延迟一下再关闭页面
@@ -530,14 +531,17 @@ class SystemSettingsActivity : AppCompatActivity() {
                 wifiStatusText.text = "✓ WiFi已连接"
                 wifiStatusText.setTextColor(0xFF4CAF50.toInt())
             }
+
             isConnected -> {
                 wifiStatusText.text = "✓ 已连接到网络"
                 wifiStatusText.setTextColor(0xFF4CAF50.toInt())
             }
+
             wifiManager.isWifiEnabled -> {
                 wifiStatusText.text = "WiFi已开启，但未连接网络"
                 wifiStatusText.setTextColor(0xFFFF9800.toInt())
             }
+
             else -> {
                 wifiStatusText.text = "✗ 无网络连接"
                 wifiStatusText.setTextColor(0xFFF44336.toInt())
@@ -706,7 +710,10 @@ class SystemSettingsActivity : AppCompatActivity() {
     }
 
     private fun checkCameraPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+        return ContextCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun requestCameraPermission() {
@@ -759,10 +766,16 @@ class SystemSettingsActivity : AppCompatActivity() {
     private fun checkStoragePermission(): Boolean {
         return if (android.os.Build.VERSION.SDK_INT >= 33) { // API 33 = TIRAMISU
             // Android 13+ 使用细粒度媒体权限
-            ContextCompat.checkSelfPermission(this, "android.permission.READ_MEDIA_IMAGES") == PackageManager.PERMISSION_GRANTED
+            ContextCompat.checkSelfPermission(
+                this,
+                "android.permission.READ_MEDIA_IMAGES"
+            ) == PackageManager.PERMISSION_GRANTED
         } else if (android.os.Build.VERSION.SDK_INT >= 23) {
             // Android 6+ 使用传统存储权限
-            ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
         } else {
             // Android 6以下不需要运行时权限
             true
@@ -881,7 +894,10 @@ class SystemSettingsActivity : AppCompatActivity() {
                 .setMessage("系统中没有找到可用的相册应用。您可以：\n1. 从应用市场安装相册应用\n2. 检查Honor相册是否被禁用\n3. 使用文件管理器查看图片")
                 .setPositiveButton("打开应用市场") { _, _ ->
                     try {
-                        val marketIntent = Intent(Intent.ACTION_VIEW, android.net.Uri.parse("market://search?q=相册"))
+                        val marketIntent = Intent(
+                            Intent.ACTION_VIEW,
+                            android.net.Uri.parse("market://search?q=相册")
+                        )
                         marketIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(marketIntent)
                     } catch (e: Exception) {
@@ -903,7 +919,10 @@ class SystemSettingsActivity : AppCompatActivity() {
     }
 
     private fun checkWritePermission(): Boolean {
-        return ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED ||
+        return ContextCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED ||
                 android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q // Android 10+ 不需要写入权限
     }
 
@@ -950,7 +969,7 @@ class SystemSettingsActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -962,6 +981,7 @@ class SystemSettingsActivity : AppCompatActivity() {
                     showStatus("相机权限被拒绝，无法打开相机")
                 }
             }
+
             REQUEST_STORAGE_PERMISSION -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     openHonorGallery()
@@ -969,6 +989,7 @@ class SystemSettingsActivity : AppCompatActivity() {
                     showStatus("存储权限被拒绝，无法打开相册")
                 }
             }
+
             REQUEST_WRITE_PERMISSION -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     openHonorFileManager()
