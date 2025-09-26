@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/yonggangzhang/Sync/ByWebView/ByWebView/build/intermediates/res/merged/release/layout/by_video_loading_progress.xml",
+        "source": "/Users/yonggangzhang/Sync/ByWebView/ByWebView/src/main/res/layout/by_video_loading_progress.xml"
+    },
+    {
+        "merged": "/Users/yonggangzhang/Sync/ByWebView/ByWebView/build/intermediates/res/merged/release/layout/by_load_url_error.xml",
+        "source": "/Users/yonggangzhang/Sync/ByWebView/ByWebView/src/main/res/layout/by_load_url_error.xml"
+    }
+]

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="by_web_string_click_load">点击重新加载</string>
+    <string name="by_web_string_loading">加载中…</string>
+</resources>

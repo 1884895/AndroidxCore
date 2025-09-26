@@ -1,0 +1,49 @@
+apply plugin: 'com.android.library'
+
+apply plugin: 'com.github.dcendents.android-maven'
+group = 'com.github.youlookwhat'
+
+android {
+    compileSdkVersion 31
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 31
+        versionCode 1
+        versionName "1.2.1"
+
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    libraryVariants.all { variant ->
+        variant.outputs.each { output ->
+            // 定义文件名格式：模块名-版本号-构建类型（如：mylibrary-1.0.0-release.aar）
+            def moduleName = project.name // 模块名（可替换为固定字符串，如"mylib"）
+            def versionName = defaultConfig.versionName ?: "1.0.0" // 版本号（取自defaultConfig）
+            def buildType = variant.buildType.name // 构建类型（debug/release）
+
+            // 拼接文件名
+            def fileName = "com.github.youlookwhat-bywebview-${versionName}.aar"
+
+            // 设置输出文件名
+            output.outputFileName = fileName
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    compileOnly 'com.google.android.material:material:1.0.0'
+//    testImplementation 'junit:junit:4.12'
+//    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+//    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}

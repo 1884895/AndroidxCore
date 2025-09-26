@@ -1,0 +1,48 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/yonggangzhang/Sync/ByWebView/ByWebView/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-en/values-en.xml",
+            "map": [
+                {
+                    "source": "/Users/yonggangzhang/Sync/ByWebView/ByWebView/src/main/res/values-en/strings.xml",
+                    "from": {
+                        "startLines": "2,1",
+                        "startColumns": "4,4",
+                        "startOffsets": "75,16",
+                        "endColumns": "59,58",
+                        "endOffsets": "130,70"
+                    },
+                    "to": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,115",
+                        "endColumns": "59,58",
+                        "endOffsets": "110,169"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "/Users/yonggangzhang/Sync/ByWebView/ByWebView/build/intermediates/res/merged/release/values-en/values-en.xml",
+            "map": [
+                {
+                    "source": "/Users/yonggangzhang/Sync/ByWebView/ByWebView/src/main/res/values-en/strings.xml",
+                    "from": {
+                        "startLines": "2,1",
+                        "startColumns": "4,4",
+                        "startOffsets": "75,16",
+                        "endColumns": "59,58",
+                        "endOffsets": "130,70"
+                    },
+                    "to": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,115",
+                        "endColumns": "59,58",
+                        "endOffsets": "110,169"
+                    }
+                }
+            ]
+        }
+    ]
+}

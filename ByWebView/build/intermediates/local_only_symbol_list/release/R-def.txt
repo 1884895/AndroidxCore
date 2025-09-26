@@ -1,0 +1,9 @@
+R_DEF: Internal format may change without notice
+local
+drawable by_icon_refresh
+drawable by_icon_video
+id progress_indicator
+layout by_load_url_error
+layout by_video_loading_progress
+string by_web_string_click_load
+string by_web_string_loading
