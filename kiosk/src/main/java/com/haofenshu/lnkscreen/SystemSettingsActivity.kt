@@ -1,10 +1,10 @@
 package com.haofenshu.lnkscreen
 
-import android.app.Activity
-import android.content.ComponentName
+
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.net.wifi.WifiManager
@@ -12,11 +12,13 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.haofenshu.lnkscreen.KioskUtils
 
 class SystemSettingsActivity : AppCompatActivity() {
 
@@ -38,6 +40,16 @@ class SystemSettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // 设置状态栏颜色
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor = Color.parseColor("#FDEAC5")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            }
+        }
+
         setContentView(createContentView())
 
         initViews()
@@ -49,14 +61,17 @@ class SystemSettingsActivity : AppCompatActivity() {
         val rootLayout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(40, 40, 40, 40)
+            setBackgroundColor(Color.parseColor("#FDEAC5"))
         }
 
         // 标题
         val titleText = TextView(this).apply {
-            text = "系统设置管理"
-            textSize = 24f
-            setTextColor(0xFF333333.toInt())
-            setPadding(0, 0, 0, 30)
+            text = "📱 系统设置管理"
+            textSize = 28f
+            setTextColor(Color.parseColor("#8B4513"))
+            setPadding(16, 8, 16, 30)
+            gravity = android.view.Gravity.CENTER
+            typeface = android.graphics.Typeface.DEFAULT_BOLD
         }
         rootLayout.addView(titleText)
 
@@ -66,11 +81,11 @@ class SystemSettingsActivity : AppCompatActivity() {
 
         // 分割线
         val divider1 = View(this).apply {
-            setBackgroundColor(0xFFE0E0E0.toInt())
+            setBackgroundColor(Color.parseColor("#D2B48C"))
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                2
-            ).apply { setMargins(0, 20, 0, 20) }
+                4
+            ).apply { setMargins(32, 16, 32, 16) }
         }
         rootLayout.addView(divider1)
 
@@ -80,11 +95,11 @@ class SystemSettingsActivity : AppCompatActivity() {
 
         // 分割线
         val divider2 = View(this).apply {
-            setBackgroundColor(0xFFE0E0E0.toInt())
+            setBackgroundColor(Color.parseColor("#D2B48C"))
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                2
-            ).apply { setMargins(0, 20, 0, 20) }
+                4
+            ).apply { setMargins(32, 16, 32, 16) }
         }
         rootLayout.addView(divider2)
 
@@ -94,11 +109,11 @@ class SystemSettingsActivity : AppCompatActivity() {
 
         // 分割线
         val divider3 = View(this).apply {
-            setBackgroundColor(0xFFE0E0E0.toInt())
+            setBackgroundColor(Color.parseColor("#D2B48C"))
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                2
-            ).apply { setMargins(0, 20, 0, 20) }
+                4
+            ).apply { setMargins(32, 16, 32, 16) }
         }
         rootLayout.addView(divider3)
 
@@ -109,18 +124,21 @@ class SystemSettingsActivity : AppCompatActivity() {
         // 状态显示
         statusText = TextView(this).apply {
             text = ""
-            textSize = 14f
-            setTextColor(0xFF666666.toInt())
-            setPadding(0, 20, 0, 0)
+            textSize = 16f
+            setTextColor(Color.parseColor("#8B4513"))
+            setPadding(16, 20, 16, 0)
+            gravity = android.view.Gravity.CENTER
+            typeface = android.graphics.Typeface.DEFAULT_BOLD
         }
         rootLayout.addView(statusText)
 
         // 网络状态详情
         val networkInfoText = TextView(this).apply {
             text = KioskUtils.getNetworkStatusInfo(this@SystemSettingsActivity)
-            textSize = 12f
-            setTextColor(0xFF999999.toInt())
-            setPadding(0, 10, 0, 0)
+            textSize = 14f
+            setTextColor(Color.parseColor("#A0522D"))
+            setPadding(16, 16, 16, 0)
+            gravity = android.view.Gravity.CENTER
         }
         rootLayout.addView(networkInfoText)
 

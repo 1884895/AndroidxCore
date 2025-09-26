@@ -1,13 +1,16 @@
 package com.haofenshu.lnkscreen
 
+import android.app.Activity
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.net.Uri
 import android.os.BatteryManager
 import android.os.Build
 import android.os.Bundle
@@ -39,7 +42,7 @@ object KioskUtils {
             }
 
             // 1. 设置白名单应用为锁定任务包
-            val whitelistManager = KioskWhitelistManager.getInstance(context)
+            val whitelistManager = KioskWhitelistManager.Companion.getInstance(context)
             val packages = whitelistManager.getWhitelistAppsForKiosk()
             devicePolicyManager.setLockTaskPackages(adminComponent, packages)
             Log.d(TAG, "设置锁定任务包: ${packages.contentToString()}")
@@ -104,7 +107,7 @@ object KioskUtils {
     @RequiresApi(Build.VERSION_CODES.O)
     fun addAppToWhitelist(context: Context, packageName: String): Boolean {
         return try {
-            val whitelistManager = KioskWhitelistManager.getInstance(context)
+            val whitelistManager = KioskWhitelistManager.Companion.getInstance(context)
             val result = whitelistManager.addToWhitelist(packageName)
 
             // 如果Kiosk模式已启用，刷新锁定任务包
@@ -122,7 +125,7 @@ object KioskUtils {
     @RequiresApi(Build.VERSION_CODES.O)
     fun removeAppFromWhitelist(context: Context, packageName: String): Boolean {
         return try {
-            val whitelistManager = KioskWhitelistManager.getInstance(context)
+            val whitelistManager = KioskWhitelistManager.Companion.getInstance(context)
             val result = whitelistManager.removeFromWhitelist(packageName)
 
             // 如果Kiosk模式已启用，刷新锁定任务包
@@ -139,7 +142,7 @@ object KioskUtils {
 
     fun isAppInWhitelist(context: Context, packageName: String): Boolean {
         return try {
-            val whitelistManager = KioskWhitelistManager.getInstance(context)
+            val whitelistManager = KioskWhitelistManager.Companion.getInstance(context)
             whitelistManager.isInWhitelist(packageName)
         } catch (e: Exception) {
             Log.e(TAG, "检查白名单失败", e)
@@ -149,7 +152,7 @@ object KioskUtils {
 
     fun getAllWhitelistApps(context: Context): Set<String> {
         return try {
-            val whitelistManager = KioskWhitelistManager.getInstance(context)
+            val whitelistManager = KioskWhitelistManager.Companion.getInstance(context)
             whitelistManager.getAllWhitelistPackages()
         } catch (e: Exception) {
             Log.e(TAG, "获取白名单失败", e)
@@ -159,7 +162,7 @@ object KioskUtils {
 
     fun getWhitelistStats(context: Context): String {
         return try {
-            val whitelistManager = KioskWhitelistManager.getInstance(context)
+            val whitelistManager = KioskWhitelistManager.Companion.getInstance(context)
             whitelistManager.getWhitelistStats()
         } catch (e: Exception) {
             Log.e(TAG, "获取白名单统计失败", e)
@@ -204,7 +207,7 @@ object KioskUtils {
 
             val devicePolicyManager = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
             val adminComponent = getDeviceAdminComponent(context)
-            val whitelistManager = KioskWhitelistManager.getInstance(context)
+            val whitelistManager = KioskWhitelistManager.Companion.getInstance(context)
 
             val packages = whitelistManager.getWhitelistAppsForKiosk()
             devicePolicyManager.setLockTaskPackages(adminComponent, packages)
@@ -363,7 +366,7 @@ object KioskUtils {
     fun openAppDetails(context: Context, packageName: String): Boolean {
         return try {
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            intent.data = android.net.Uri.parse("package:$packageName")
+            intent.data = Uri.parse("package:$packageName")
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
             Log.d(TAG, "已打开应用详情: $packageName")
@@ -592,7 +595,7 @@ object KioskUtils {
      */
     fun startFloatingEntryService(context: Context): Boolean {
         return try {
-            FloatingEntryService.start(context)
+            FloatingEntryService.Companion.start(context)
             Log.d(TAG, "双重入口服务已启动")
             true
         } catch (e: Exception) {
@@ -606,7 +609,7 @@ object KioskUtils {
      */
     fun stopFloatingEntryService(context: Context): Boolean {
         return try {
-            FloatingEntryService.stop(context)
+            FloatingEntryService.Companion.stop(context)
             Log.d(TAG, "双重入口服务已停止")
             true
         } catch (e: Exception) {
@@ -633,7 +636,7 @@ object KioskUtils {
         return try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
-                intent.data = android.net.Uri.parse("package:${context.packageName}")
+                intent.data = Uri.parse("package:${context.packageName}")
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 context.startActivity(intent)
                 Log.d(TAG, "已打开悬浮窗权限设置页面")
@@ -1114,7 +1117,7 @@ object KioskUtils {
         return try {
             // 检查是否为debug模式
             val applicationInfo = context.applicationInfo
-            val isDebug = (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0
+            val isDebug = (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
 
             if (!isDebug) {
                 Log.w(TAG, "非Debug模式，不允许退出Kiosk模式")
@@ -1123,7 +1126,7 @@ object KioskUtils {
 
             // 如果正在锁定任务模式，先退出
             if (isKioskModeActive(context)) {
-                if (context is android.app.Activity) {
+                if (context is Activity) {
                     context.stopLockTask()
                 }
             }

@@ -25,7 +25,9 @@ class KioskWhitelistManager private constructor(private val context: Context) {
     fun getSystemWhitelistPackages(): Set<String> {
         return setOf(
             // 主应用
-            "com.jingzhunxue.aicoach",                // AI教练主应用
+            "com.jingzhunxue.aicoach",
+            "com.jingzhunxue.tifenben",
+            // AI教练主应用
             context.packageName,                       // 当前kiosk应用
 
             // 输入法

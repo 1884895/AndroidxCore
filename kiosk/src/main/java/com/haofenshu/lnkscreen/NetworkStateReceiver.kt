@@ -1,11 +1,13 @@
 package com.haofenshu.lnkscreen
 
+
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.util.Log
+import com.haofenshu.lnkscreen.KioskUtils
 
 class NetworkStateReceiver : BroadcastReceiver() {
 
