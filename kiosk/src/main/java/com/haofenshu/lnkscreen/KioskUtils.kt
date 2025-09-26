@@ -812,8 +812,8 @@ object KioskUtils {
         adminComponent: ComponentName
     ) {
         try {
-            // 屏蔽用户配置相关功能，这会限制重置等危险操作
-            devicePolicyManager.addUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_CREDENTIALS)
+            // 不限制用户配置功能，允许访问系统设置包括亮度调节
+            // devicePolicyManager.addUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_CREDENTIALS)
 
             // 添加更多限制以确保重置功能被完全屏蔽
             devicePolicyManager.addUserRestriction(adminComponent, UserManager.DISALLOW_FACTORY_RESET)
@@ -1268,8 +1268,8 @@ object KioskUtils {
             // 2. 禁用系统UI相关功能
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 try {
-                    // 禁用系统导航栏的手势操作
-                    devicePolicyManager.addUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_BRIGHTNESS)
+                    // 不再限制亮度调节，允许手动和自动调节
+                    // devicePolicyManager.addUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_BRIGHTNESS)
 
                     // 如果API支持，禁用边缘手势
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -1484,7 +1484,8 @@ object KioskUtils {
             try {
                 devicePolicyManager.addUserRestriction(adminComponent, UserManager.DISALLOW_FACTORY_RESET)
                 devicePolicyManager.addUserRestriction(adminComponent, UserManager.DISALLOW_NETWORK_RESET)
-                devicePolicyManager.addUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_CREDENTIALS)
+                // 不限制用户配置功能，允许亮度调节
+                // devicePolicyManager.addUserRestriction(adminComponent, UserManager.DISALLOW_CONFIG_CREDENTIALS)
 
                 // 添加更多限制来彻底屏蔽重置功能
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
