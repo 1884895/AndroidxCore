@@ -501,35 +501,7 @@ object KioskUtils {
         }
     }
 
-    /**
-     * 启用网络断开自动跳转功能
-     */
-    fun enableNetworkAutoJump() {
-        NetworkStateReceiver.Controller.enableAutoJump()
-        Log.d(TAG, "网络断开自动跳转功能已启用")
-    }
-
-    /**
-     * 禁用网络断开自动跳转功能
-     */
-    fun disableNetworkAutoJump() {
-        NetworkStateReceiver.Controller.disableAutoJump()
-        Log.d(TAG, "网络断开自动跳转功能已禁用")
-    }
-
-    /**
-     * 检查网络断开自动跳转功能是否启用
-     */
-    fun isNetworkAutoJumpEnabled(): Boolean {
-        return NetworkStateReceiver.Controller.isAutoJumpEnabled()
-    }
-
-    /**
-     * 手动触发网络检查和跳转
-     */
-    fun manualNetworkCheck(context: Context) {
-        NetworkStateReceiver.Controller.checkNetworkAndJump(context)
-    }
+    // 自动跳转相关功能已移除（过期逻辑）
 
     /**
      * 注册网络状态监听器（建议在Application或长期运行的Service中调用）
@@ -569,7 +541,7 @@ object KioskUtils {
                 }
             }
 
-            sb.append("- 自动跳转: ${if (isNetworkAutoJumpEnabled()) "已启用" else "已禁用"}\n")
+            // 自动跳转功能已移除
 
             sb.toString()
         } catch (e: Exception) {
@@ -674,7 +646,7 @@ object KioskUtils {
         val sb = StringBuilder()
         sb.append("双重入口服务状态:\n")
         sb.append("- 悬浮窗权限: ${if (hasOverlayPermission(context)) "已授权" else "未授权"}\n")
-        sb.append("- 网络自动跳转: ${if (isNetworkAutoJumpEnabled()) "已启用" else "已禁用"}\n")
+        // 网络自动跳转功能已移除
 
         return sb.toString()
     }
@@ -732,8 +704,7 @@ object KioskUtils {
      */
     fun enableCompleteEntrySystem(context: Context): Boolean {
         return try {
-            // 1. 启用网络自动跳转
-            enableNetworkAutoJump()
+            // 1. 网络自动跳转功能已移除
 
             // 2. 启动双重入口服务
             val serviceStarted = startFloatingEntryService(context)
@@ -757,8 +728,7 @@ object KioskUtils {
      */
     fun disableCompleteEntrySystem(context: Context): Boolean {
         return try {
-            // 1. 禁用网络自动跳转
-            disableNetworkAutoJump()
+            // 1. 网络自动跳转功能已移除
 
             // 2. 停止双重入口服务
             val serviceStopped = stopFloatingEntryService(context)
@@ -802,8 +772,7 @@ object KioskUtils {
      */
     fun enableLiteEntrySystem(context: Context): Boolean {
         return try {
-            // 1. 禁用网络自动跳转
-            disableNetworkAutoJump()
+            // 1. 网络自动跳转功能已移除
 
             // 2. 检查网络状态并更新页面内悬浮按钮
             updateInPageFloatingNetworkStatus(context)
