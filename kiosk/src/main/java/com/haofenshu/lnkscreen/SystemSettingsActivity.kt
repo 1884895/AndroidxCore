@@ -28,7 +28,8 @@ class SystemSettingsActivity : AppCompatActivity() {
     private lateinit var soundSettingsButton: Button
     private lateinit var dateTimeButton: Button
     private lateinit var statusText: TextView
-    private lateinit var networkInfoText: TextView
+    private lateinit var backButton: Button
+    private lateinit var versionText: TextView
 
     private lateinit var connectivityManager: ConnectivityManager
     private lateinit var wifiManager: WifiManager
@@ -66,10 +67,16 @@ class SystemSettingsActivity : AppCompatActivity() {
         soundSettingsButton = findViewById(R.id.soundSettingsButton)
         dateTimeButton = findViewById(R.id.dateTimeButton)
         statusText = findViewById(R.id.statusText)
-        networkInfoText = findViewById(R.id.networkInfoText)
+        backButton = findViewById(R.id.backButton)
+        versionText = findViewById(R.id.versionText)
 
-        // 设置网络状态详情
-        networkInfoText.text = KioskUtils.getNetworkStatusInfo(this)
+        // 设置版本号
+        try {
+            val packageInfo = packageManager.getPackageInfo(packageName, 0)
+            versionText.text = "版本号: ${packageInfo.versionName}"
+        } catch (e: Exception) {
+            versionText.text = "版本号: 未知"
+        }
     }
 
     private fun initServices() {
@@ -78,6 +85,11 @@ class SystemSettingsActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
+        // 返回按钮
+        backButton.setOnClickListener {
+            finish()
+        }
+
         // 基本功能按钮
         brightnessButton.setOnClickListener { openBrightnessSettings() }
         soundSettingsButton.setOnClickListener { openSoundSettings() }
