@@ -10,6 +10,7 @@ import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.LinearLayout
@@ -34,11 +35,13 @@ class SystemSettingsActivity : AppCompatActivity() {
 
     private lateinit var connectivityManager: ConnectivityManager
     private lateinit var wifiManager: WifiManager
+    private var input = 0
 
     companion object {
         private const val REQUEST_CAMERA_PERMISSION = 1001
         private const val REQUEST_STORAGE_PERMISSION = 1002
         private const val REQUEST_WRITE_PERMISSION = 1003
+        const val KEY_INPUT = "key_input"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,6 +62,7 @@ class SystemSettingsActivity : AppCompatActivity() {
         initServices()
         setupClickListeners()
         updateNetworkStatus()
+        input = intent.getIntExtra(KEY_INPUT, 0)
     }
 
     private fun initViews() {
@@ -93,7 +97,10 @@ class SystemSettingsActivity : AppCompatActivity() {
     private fun setupClickListeners() {
         // 返回按钮
         backButton.setOnClickListener {
-            finish()
+            if (input == 0) {
+                setResult(111111, Intent())
+                finish()
+            }
         }
 
         // 基本功能按钮
@@ -557,8 +564,11 @@ class SystemSettingsActivity : AppCompatActivity() {
         updateNetworkStatus()
     }
 
-    override fun onDestroy() {
-        setResult(111111)
-        super.onDestroy()
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK && input == 0) {
+            setResult(111111, Intent())
+            finish()
+        }
+        return super.onKeyDown(keyCode, event)
     }
 }
