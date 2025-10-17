@@ -12,18 +12,24 @@
         android:layout_marginBottom="14dp"
         android:paddingRight="18dp">
 
-        <!-- 返回按钮 -->
-        <TextView
+        <RelativeLayout
             android:id="@+id/backButton"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="18dp"
-            android:adjustViewBounds="true"
-            android:background="@mipmap/icon_system_arrow"
-            android:padding="0dp"
-            android:rotation="180" />
+            android:paddingLeft="18dp">
+            <!-- 返回按钮 -->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="18dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:adjustViewBounds="true"
+                android:padding="0dp"
+                android:rotation="180"
+                android:src="@mipmap/icon_system_arrow" />
+        </RelativeLayout>
+
 
         <!-- 标题 -->
         <TextView
@@ -73,11 +79,16 @@
                 <TextView
                     android:id="@+id/wifiStatusText"
                     android:layout_width="wrap_content"
-                    android:layout_height="18dp"
+                    android:layout_height="34dp"
                     android:layout_marginTop="13dp"
+                    android:background="@drawable/shap_wifi_status"
                     android:drawableLeft="@drawable/shap_net_dot"
                     android:drawablePadding="7dp"
                     android:gravity="center"
+                    android:paddingLeft="12dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="12dp"
+                    android:paddingBottom="8dp"
                     android:text="检查网络状态中..."
                     android:textColor="#FF00C81F"
                     android:textSize="13sp" />
