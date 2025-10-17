@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FDEAC5"
+    android:orientation="vertical">
+
+    <!-- 标题栏 -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="14dp"
+        android:paddingRight="18dp">
+
+        <!-- 返回按钮 -->
+        <TextView
+            android:id="@+id/backButton"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="18dp"
+            android:adjustViewBounds="true"
+            android:background="@mipmap/icon_system_arrow"
+            android:padding="0dp"
+            android:rotation="180" />
+
+        <!-- 标题 -->
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="系统设置管理"
+            android:textColor="#FF333333"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="18dp"
+            android:paddingRight="18dp">
+
+            <LinearLayout
+                android:id="@+id/networkCheckButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/item_style_white"
+                android:orientation="vertical"
+                android:paddingLeft="18dp"
+                android:paddingTop="20dp"
+                android:paddingRight="18dp"
+                android:paddingBottom="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/line_vertical_style"
+                    android:drawablePadding="7dp"
+                    android:gravity="center_vertical"
+                    android:text="网络设置"
+                    android:textColor="#FF333333"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/wifiStatusText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="13dp"
+                    android:drawableLeft="@drawable/shap_net_dot"
+                    android:drawablePadding="7dp"
+                    android:gravity="center"
+                    android:text="检查网络状态中..."
+                    android:textColor="#FF00C81F"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/brightnessButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/item_style_white"
+                android:orientation="vertical"
+                android:paddingLeft="18dp"
+                android:paddingTop="20dp"
+                android:paddingRight="18dp"
+                android:paddingBottom="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/line_vertical_style"
+                    android:drawablePadding="7dp"
+                    android:gravity="center_vertical"
+                    android:text="显示设置"
+                    android:textColor="#FF333333"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:drawableLeft="@mipmap/icon_system_ld"
+                    android:drawableRight="@mipmap/icon_system_arrow"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
+                    android:text="屏幕亮度调节"
+                    android:textColor="#FF333333"
+                    android:textSize="13sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/item_style_white"
+                android:orientation="vertical"
+                android:paddingLeft="18dp"
+                android:paddingTop="20dp"
+                android:paddingRight="18dp"
+                android:paddingBottom="9dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/line_vertical_style"
+                    android:drawablePadding="7dp"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="11dp"
+                    android:text="音频和时间"
+                    android:textColor="#FF333333"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/soundSettingsButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/icon_system_sy"
+                    android:drawableRight="@mipmap/icon_system_arrow"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
+                    android:paddingTop="11dp"
+                    android:paddingBottom="11dp"
+                    android:text="声音设置"
+                    android:textColor="#FF333333"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/dateTimeButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/icon_system_biao"
+                    android:drawableRight="@mipmap/icon_system_arrow"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
+                    android:paddingTop="11dp"
+                    android:paddingBottom="11dp"
+                    android:text="日期和时间设置"
+                    android:textColor="#FF333333"
+                    android:textSize="13sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="20dp">
+
+                <TextView
+                    android:id="@+id/shutdownButton"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/item_style_white"
+                    android:gravity="center"
+                    android:text="关机"
+                    android:textColor="#FFFF0000"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/rebootButton"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_marginLeft="13dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/item_style_white"
+                    android:gravity="center"
+                    android:text="重启"
+                    android:textColor="#FF00A024"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/debugButtonsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/item_style_white"
+                android:orientation="vertical"
+                android:paddingLeft="18dp"
+                android:paddingTop="20dp"
+                android:paddingRight="18dp"
+                android:paddingBottom="9dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/line_vertical_style"
+                    android:drawablePadding="7dp"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="11dp"
+                    android:text="系统设置"
+                    android:textColor="#FF333333"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/developerButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/icon_system_sy"
+                    android:drawableRight="@mipmap/icon_system_arrow"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
+                    android:paddingTop="11dp"
+                    android:paddingBottom="11dp"
+                    android:text="🛠️ 开发者选项(Debug)"
+                    android:textColor="#FF333333"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/applicationButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/icon_system_biao"
+                    android:drawableRight="@mipmap/icon_system_arrow"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
+                    android:paddingTop="11dp"
+                    android:paddingBottom="11dp"
+                    android:text="📱 应用管理(Debug)"
+                    android:textColor="#FF333333"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/cameraButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/icon_system_biao"
+                    android:drawableRight="@mipmap/icon_system_arrow"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
+                    android:paddingTop="11dp"
+                    android:paddingBottom="11dp"
+                    android:text="📱 打开HONOR相机(Debug)"
+                    android:textColor="#FF333333"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/galleryButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/icon_system_biao"
+                    android:drawableRight="@mipmap/icon_system_arrow"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
+                    android:paddingTop="11dp"
+                    android:paddingBottom="11dp"
+                    android:text="📱 打开HONOR相册(Debug)"
+                    android:textColor="#FF333333"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/fileManagerButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/icon_system_biao"
+                    android:drawableRight="@mipmap/icon_system_arrow"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
+                    android:paddingTop="11dp"
+                    android:paddingBottom="11dp"
+                    android:text="📱 打开HONOR文件管理"
+                    android:textColor="#FF333333"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/exitKioskButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/icon_system_biao"
+                    android:drawableRight="@mipmap/icon_system_arrow"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
+                    android:paddingTop="11dp"
+                    android:paddingBottom="11dp"
+                    android:text="📱 退出单应用模式"
+                    android:textColor="#FF333333"
+                    android:textSize="13sp" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/versionText"
+                android:layout_width="match_parent"
+                android:layout_height="18dp"
+                android:layout_marginTop="50dp"
+                android:gravity="center"
+                android:text="版本号："
+                android:textColor="#FFB45604"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

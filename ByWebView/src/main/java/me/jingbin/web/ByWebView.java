@@ -114,8 +114,10 @@ public class ByWebView {
         ws.setSupportZoom(true);
         ws.setBuiltInZoomControls(true);
         ws.setDisplayZoomControls(false);
-        // 启动应用缓存
-        ws.setAppCacheEnabled(true);
+        // 启动应用缓存 - API 33+ 已废弃,静默忽略
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            ws.setAppCacheEnabled(true);
+        }
         // 设置缓存模式
         ws.setCacheMode(WebSettings.LOAD_DEFAULT);
         // setDefaultZoom  api19被弃用

@@ -23,13 +23,15 @@ import androidx.core.content.ContextCompat
 class SystemSettingsActivity : AppCompatActivity() {
 
     private lateinit var wifiStatusText: TextView
-    private lateinit var brightnessButton: Button
-    private var systemSettingsButton: Button? = null
-    private lateinit var soundSettingsButton: Button
-    private lateinit var dateTimeButton: Button
-    private lateinit var statusText: TextView
-    private lateinit var backButton: Button
+    private lateinit var brightnessButton: View
+    private lateinit var soundSettingsButton: View
+    private lateinit var dateTimeButton: View
+    private lateinit var networkCheckButton: View
+    private lateinit var shutdownButton: View
+    private lateinit var rebootButton: View
+    private lateinit var backButton: View
     private lateinit var versionText: TextView
+    private lateinit var debugButtonsLayout: LinearLayout
 
     private lateinit var connectivityManager: ConnectivityManager
     private lateinit var wifiManager: WifiManager
@@ -52,12 +54,11 @@ class SystemSettingsActivity : AppCompatActivity() {
             }
         }
 
-        setContentView(R.layout.activity_system_settings)
+        setContentView(R.layout.activity_system_settings1)
 
         initViews()
         initServices()
         setupClickListeners()
-        checkDebugMode()
         updateNetworkStatus()
     }
 
@@ -66,9 +67,12 @@ class SystemSettingsActivity : AppCompatActivity() {
         brightnessButton = findViewById(R.id.brightnessButton)
         soundSettingsButton = findViewById(R.id.soundSettingsButton)
         dateTimeButton = findViewById(R.id.dateTimeButton)
-        statusText = findViewById(R.id.statusText)
+        networkCheckButton = findViewById(R.id.networkCheckButton)
+        shutdownButton = findViewById(R.id.shutdownButton)
+        rebootButton = findViewById(R.id.rebootButton)
         backButton = findViewById(R.id.backButton)
         versionText = findViewById(R.id.versionText)
+        debugButtonsLayout = findViewById(R.id.debugButtonsLayout)
 
         // 设置版本号
         try {
@@ -77,6 +81,9 @@ class SystemSettingsActivity : AppCompatActivity() {
         } catch (e: Exception) {
             versionText.text = "版本号: 未知"
         }
+
+        // 检查是否为Debug模式
+        checkDebugMode()
     }
 
     private fun initServices() {
@@ -96,15 +103,15 @@ class SystemSettingsActivity : AppCompatActivity() {
         dateTimeButton.setOnClickListener { openDateTimeSettings() }
 
         // 网络检测按钮
-        findViewById<Button>(R.id.networkCheckButton).setOnClickListener {
+        networkCheckButton.setOnClickListener {
             performNetworkCheck()
         }
 
         // 电源管理按钮
-        findViewById<Button>(R.id.shutdownButton).setOnClickListener {
+        shutdownButton.setOnClickListener {
             showShutdownDialog()
         }
-        findViewById<Button>(R.id.rebootButton).setOnClickListener {
+        rebootButton.setOnClickListener {
             showRebootDialog()
         }
     }
@@ -116,54 +123,27 @@ class SystemSettingsActivity : AppCompatActivity() {
 
         if (isDebug) {
             // 显示Debug按钮组
-            findViewById<Button>(R.id.networkSettingsButton).apply {
-                visibility = View.VISIBLE
-                setOnClickListener { openNetworkSettings() }
+            debugButtonsLayout.visibility = View.VISIBLE
+
+            // 设置Debug按钮点击事件
+            debugButtonsLayout.findViewById<View>(R.id.developerButton).setOnClickListener {
+                openDeveloperOptions()
             }
-
-            findViewById<LinearLayout>(R.id.debugButtonsLayout).apply {
-                visibility = View.VISIBLE
-
-                // 设置Debug按钮点击事件
-                findViewById<Button>(R.id.systemSettingsButton).setOnClickListener {
-                    openSystemSettings()
-                }
-                findViewById<Button>(R.id.developerButton).setOnClickListener {
-                    openDeveloperOptions()
-                }
-                findViewById<Button>(R.id.applicationButton).setOnClickListener {
-                    openApplicationSettings()
-                }
+            debugButtonsLayout.findViewById<View>(R.id.applicationButton).setOnClickListener {
+                openApplicationSettings()
             }
-
-            findViewById<LinearLayout>(R.id.honorAppsLayout).apply {
-                visibility = View.VISIBLE
-
-                // 设置Honor应用按钮点击事件
-                findViewById<Button>(R.id.floatingWindowDebugButton).setOnClickListener {
-                    debugFloatingWindow()
-                }
-                findViewById<Button>(R.id.cameraButton).setOnClickListener {
-                    openHonorCameraWithPermission()
-                }
-                findViewById<Button>(R.id.galleryButton).setOnClickListener {
-                    openHonorGalleryWithPermission()
-                }
-                findViewById<Button>(R.id.fileManagerButton).setOnClickListener {
-                    openHonorFileManagerWithPermission()
-                }
-                findViewById<Button>(R.id.dockBarButton).setOnClickListener {
-                    handleDockBarBlocking()
-                }
-                findViewById<Button>(R.id.resetSettingsButton).setOnClickListener {
-                    handleResetSettingsBlocking()
-                }
-                findViewById<Button>(R.id.exitKioskButton).setOnClickListener {
-                    handleExitKioskMode()
-                }
+            debugButtonsLayout.findViewById<View>(R.id.cameraButton).setOnClickListener {
+                openHonorCameraWithPermission()
             }
-
-            systemSettingsButton = findViewById(R.id.systemSettingsButton)
+            debugButtonsLayout.findViewById<View>(R.id.galleryButton).setOnClickListener {
+                openHonorGalleryWithPermission()
+            }
+            debugButtonsLayout.findViewById<View>(R.id.fileManagerButton).setOnClickListener {
+                openHonorFileManagerWithPermission()
+            }
+            debugButtonsLayout.findViewById<View>(R.id.exitKioskButton).setOnClickListener {
+                handleExitKioskMode()
+            }
         }
     }
 
@@ -197,10 +177,9 @@ class SystemSettingsActivity : AppCompatActivity() {
 
     private fun performNetworkCheck() {
         val networkInfo = KioskUtils.getNetworkStatusInfo(this)
-        showStatus("网络状态检查完成")
         android.app.AlertDialog.Builder(this)
             .setTitle("网络检测")
-            .setMessage("当前无网络连接\n\n$networkInfo")
+            .setMessage("网络状态信息：\n\n$networkInfo")
             .setPositiveButton("打开WiFi设置") { _, _ ->
                 openWifiSettings()
             }
@@ -208,75 +187,8 @@ class SystemSettingsActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun debugFloatingWindow() {
-        val debugInfo = KioskUtils.debugFloatingWindow(this)
-        android.app.AlertDialog.Builder(this)
-            .setTitle("悬浮窗调试信息")
-            .setMessage(debugInfo)
-            .setPositiveButton("测试悬浮窗") { _, _ ->
-                val success = KioskUtils.testFloatingWindow(this)
-                showStatus(if (success) "悬浮窗测试成功" else "悬浮窗测试失败")
-            }
-            .setNegativeButton("申请权限") { _, _ ->
-                KioskUtils.requestOverlayPermission(this)
-            }
-            .setNeutralButton("关闭", null)
-            .show()
-    }
-
-    private fun handleDockBarBlocking() {
-        val isBlocked = KioskUtils.isHonorDockBarBlocked(this)
-        val statusText = if (isBlocked) "已屏蔽" else "未屏蔽"
-
-        android.app.AlertDialog.Builder(this)
-            .setTitle("Honor侧滑悬浮入口状态")
-            .setMessage("当前状态: $statusText\n\n需要重新应用Kiosk模式设置才能屏蔽Honor侧滑悬浮入口")
-            .setPositiveButton("重新应用设置") { _, _ ->
-                val success = KioskUtils.setupEnhancedKioskMode(this)
-                if (success) {
-                    showStatus("Honor侧滑悬浮入口屏蔽设置已应用")
-                    val newStatus = KioskUtils.isHonorDockBarBlocked(this)
-                    val newStatusText = if (newStatus) "已屏蔽" else "仍未屏蔽"
-                    showStatus("屏蔽状态: $newStatusText")
-                } else {
-                    showStatus("屏蔽设置失败，请检查设备管理员权限")
-                }
-            }
-            .setNegativeButton("取消", null)
-            .show()
-    }
-
-    private fun handleResetSettingsBlocking() {
-        val isBlocked = KioskUtils.isHonorResetSettingsBlocked(this)
-        val statusText = if (isBlocked) "已屏蔽" else "未屏蔽"
-
-        android.app.AlertDialog.Builder(this)
-            .setTitle("Honor重置菜单项屏蔽状态")
-            .setMessage("当前状态: $statusText\n\n目标: 系统设置应用内的重置菜单项\n(SubSettings页面)\n\n需要重新应用Kiosk模式设置才能屏蔽重置菜单项")
-            .setPositiveButton("重新应用设置") { _, _ ->
-                val success = KioskUtils.setupEnhancedKioskMode(this)
-                if (success) {
-                    showStatus("Honor重置菜单项屏蔽设置已应用")
-                    val newStatus = KioskUtils.isHonorResetSettingsBlocked(this)
-                    val newStatusText = if (newStatus) "已屏蔽" else "仍未屏蔽"
-                    showStatus("重置菜单项屏蔽状态: $newStatusText")
-                } else {
-                    showStatus("屏蔽设置失败，请检查设备管理员权限")
-                }
-            }
-            .setNeutralButton("打开系统设置测试") { _, _ ->
-                try {
-                    val intent = Intent(Settings.ACTION_SETTINGS).apply {
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    }
-                    startActivity(intent)
-                    showStatus("已打开系统设置，请手动检查重置选项是否被隐藏")
-                } catch (e: Exception) {
-                    showStatus("无法打开系统设置: ${e.message}")
-                }
-            }
-            .setNegativeButton("取消", null)
-            .show()
+    private fun openWifiSettings() {
+        KioskUtils.openSystemSettings(this, Settings.ACTION_WIFI_SETTINGS)
     }
 
     private fun handleExitKioskMode() {
@@ -296,15 +208,6 @@ class SystemSettingsActivity : AppCompatActivity() {
             }
             .setNegativeButton("取消", null)
             .show()
-    }
-
-    // 原有的功能方法保持不变
-    private fun openNetworkSettings() {
-        KioskUtils.openSystemSettings(this, Settings.ACTION_WIRELESS_SETTINGS)
-    }
-
-    private fun openWifiSettings() {
-        KioskUtils.openSystemSettings(this, Settings.ACTION_WIFI_SETTINGS)
     }
 
     private fun openBrightnessSettings() {
@@ -330,10 +233,6 @@ class SystemSettingsActivity : AppCompatActivity() {
         KioskUtils.openSystemSettings(this, Settings.ACTION_DATE_SETTINGS)
     }
 
-    private fun openSystemSettings() {
-        KioskUtils.openSystemSettings(this)
-    }
-
     private fun openDeveloperOptions() {
         KioskUtils.openDeveloperOptions(this)
     }
@@ -343,10 +242,7 @@ class SystemSettingsActivity : AppCompatActivity() {
     }
 
     private fun showStatus(message: String) {
-        statusText.text = message
-        statusText.postDelayed({
-            statusText.text = ""
-        }, 3000)
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun openHonorCameraWithPermission() {
