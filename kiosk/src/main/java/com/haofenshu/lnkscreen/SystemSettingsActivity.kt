@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -556,5 +555,10 @@ class SystemSettingsActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         updateNetworkStatus()
+    }
+
+    override fun onDestroy() {
+        setResult(111111)
+        super.onDestroy()
     }
 }
