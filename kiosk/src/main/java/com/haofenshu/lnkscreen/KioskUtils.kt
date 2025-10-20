@@ -1245,6 +1245,7 @@ object KioskUtils {
             // 1. 屏蔽com.hihonor.hndockbar包
             val blockedPackages = listOf(
                 "com.hihonor.hndockbar",
+                "com.huawei.hwdockbar",
                 "com.hihonor.desktop.explorer",
                 "com.hihonor.android.projectmenu"
             )
@@ -1351,6 +1352,7 @@ object KioskUtils {
 
             // 检查关键的dock相关应用是否被隐藏
             val dockPackages = listOf(
+                "com.huawei.hwdockbar",
                 "com.hihonor.hndockbar",
                 "com.hihonor.desktop.explorer"
             )
