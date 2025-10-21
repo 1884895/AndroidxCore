@@ -47,13 +47,13 @@ object KioskUtils {
             devicePolicyManager.setLockTaskPackages(adminComponent, packages)
             Log.d(TAG, "设置锁定任务包: ${packages.contentToString()}")
 
-            // 2. 配置锁定任务特性（保留状态栏和通知）
+            // 2. 配置锁定任务特性（保留状态栏但屏蔽通知）
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 val features = DevicePolicyManager.LOCK_TASK_FEATURE_SYSTEM_INFO or
-                        DevicePolicyManager.LOCK_TASK_FEATURE_NOTIFICATIONS or
                         DevicePolicyManager.LOCK_TASK_FEATURE_HOME
+                // 移除 LOCK_TASK_FEATURE_NOTIFICATIONS 以屏蔽单应用模式下的通知
                 devicePolicyManager.setLockTaskFeatures(adminComponent, features)
-                Log.d(TAG, "保留状态栏和通知功能")
+                Log.d(TAG, "保留状态栏但屏蔽通知功能")
             }
 
             // 3. 屏蔽恢复出厂设置功能
@@ -290,6 +290,7 @@ object KioskUtils {
                 sb.append("- 开发者选项: ${if (restrictions.getBoolean(UserManager.DISALLOW_DEBUGGING_FEATURES)) "已禁用" else "允许"}\n")
                 sb.append("- 应用安装: ${if (restrictions.getBoolean(UserManager.DISALLOW_INSTALL_APPS)) "已禁用" else "允许"}\n")
                 sb.append("- 应用卸载: ${if (restrictions.getBoolean(UserManager.DISALLOW_UNINSTALL_APPS)) "已禁用" else "允许"}\n")
+                sb.append("- 通知功能: 已屏蔽\n")
                 sb.append("- 系统重置选项: ${if (isSettingRestricted(context)) "已屏蔽" else "未屏蔽"}\n")
                 sb.append("- Honor重置菜单项: ${if (isHonorResetSettingsBlocked(context)) "已屏蔽" else "未屏蔽"}\n")
                 sb.append("- 智慧多窗功能: ${if (isSmartWindowBlocked(context)) "已屏蔽" else "未屏蔽"}\n")
